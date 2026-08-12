@@ -1,0 +1,4 @@
+thermal-watch
+compile.log
+build/
+*.o

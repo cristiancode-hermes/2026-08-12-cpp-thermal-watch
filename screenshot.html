@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1e1e2e;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 40px;
+  }
+  .terminal {
+    background: #181825;
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #cdd6f4;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    max-width: 940px;
+    width: 100%;
+    border: 1px solid #313244;
+  }
+  .terminal .title-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 16px; border-bottom: 1px solid #313244;
+    margin-bottom: 16px;
+  }
+  .terminal .title-bar .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .terminal .title-bar .dot.r { background: #f38ba8; }
+  .terminal .title-bar .dot.y { background: #f9e2af; }
+  .terminal .title-bar .dot.g { background: #a6e3a1; }
+  .terminal .title-bar .title { margin-left: 12px; font-size: 13px; color: #6c7086; }
+  .terminal .line { white-space: pre; }
+  .terminal .highlight { color: #89b4fa; }
+  .terminal .green { color: #a6e3a1; }
+  .terminal .yellow { color: #f9e2af; }
+  .terminal .red { color: #f38ba8; }
+  .terminal .dim { color: #6c7086; }
+  .terminal .cyan { color: #89dceb; }
+  .terminal .bold { color: #cdd6f4; }
+  .terminal .sep { color: #45475a; }
+  .terminal .prompt { color: #a6adc8; }
+  .terminal .header { color: #f5e0dc; }
+</style>
+</head>
+<body>
+<div class="terminal">
+  <div class="title-bar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <span class="title">thermal-watch — Linux Thermal Monitor (C++23)</span>
+  </div>
+
+  <div class="line prompt">  $ ./thermal-watch</div>
+  <div class="line bold">  THERMAL WATCH — Linux thermal monitor  (/sys/class/thermal + cpufreq)</div>
+  <div class="line sep">  ------------------------------------------------------------------------------</div>
+  <div class="line cyan">  THERMAL ZONES (2)</div>
+  <div class="line dim">   ZONE  TYPE                         TEMP     POLICY</div>
+  <div class="line">     0  x86_pkg_temp                  <span class="yellow">   67.0 C</span>  step_wise</div>
+  <div class="line">     1  acpitz                        <span class="green">   45.0 C</span>  user_space</div>
+  <div class="line"></div>
+  <div class="line cyan">  COOLING DEVICES (4)</div>
+  <div class="line dim">   DEV  TYPE                         CUR/MAX   THROTTLE  BAR</div>
+  <div class="line">     0  Processor                      0/100       0.0%  <span class="green">................</span></div>
+  <div class="line">     1  Processor                     45/100      45.0%  <span class="yellow">|||||||||.......</span></div>
+  <div class="line">     2  intel_powerclamp               0/50        0.0%  <span class="green">................</span></div>
+  <div class="line">     3  Processor                     82/100      82.0%  <span class="red">||||||||||||||..</span></div>
+  <div class="line"></div>
+  <div class="line cyan">  CPU FREQUENCY (8 cores, governor: powersave)</div>
+  <div class="line dim">   CPU  GOV          CUR        MAX</div>
+  <div class="line">     0  powersave  2.40GHz   4.80GHz</div>
+  <div class="line">     1  powersave  2.40GHz   4.80GHz</div>
+  <div class="line">     2  powersave  2.40GHz   4.80GHz</div>
+  <div class="line">     3  powersave  3.10GHz   4.80GHz</div>
+  <div class="line"></div>
+  <div class="line cyan">  SUMMARY</div><div class="line">  zones 2   coolers 4   cores 8   max temp <span class="yellow">67.0 C</span></div>
+  <div class="line"></div>
+
+  <div class="line prompt">  $ ./thermal-watch --json | python3 -m json.tool</div>
+  <div class="line sep">  {</div>
+  <div class="line">    <span class="cyan">"zones"</span>: [</div>
+  <div class="line">        {<span class="cyan">"index"</span>: 0, <span class="cyan">"type"</span>: <span class="yellow">"x86_pkg_temp"</span>, <span class="cyan">"temp_celsius"</span>: 67.0, <span class="cyan">"policy"</span>: <span class="yellow">"step_wise"</span>},</div>
+  <div class="line">        {<span class="cyan">"index"</span>: 1, <span class="cyan">"type"</span>: <span class="yellow">"acpitz"</span>, <span class="cyan">"temp_celsius"</span>: 45.0, <span class="cyan">"policy"</span>: <span class="yellow">"user_space"</span>}</div>
+  <div class="line">    ],</div>
+  <div class="line">    <span class="cyan">"cooling_devices"</span>: [</div>
+  <div class="line">        {<span class="cyan">"index"</span>: 0, <span class="cyan">"type"</span>: <span class="yellow">"Processor"</span>, <span class="cyan">"max_state"</span>: 100, <span class="cyan">"cur_state"</span>: 0, <span class="cyan">"throttle_pct"</span>: 0.0},</div>
+  <div class="line">        {<span class="cyan">"index"</span>: 1, <span class="cyan">"type"</span>: <span class="yellow">"Processor"</span>, <span class="cyan">"max_state"</span>: 100, <span class="cyan">"cur_state"</span>: 45, <span class="cyan">"throttle_pct"</span>: 45.0},</div>
+  <div class="line">        {<span class="cyan">"index"</span>: 3, <span class="cyan">"type"</span>: <span class="yellow">"Processor"</span>, <span class="cyan">"max_state"</span>: 100, <span class="cyan">"cur_state"</span>: 82, <span class="cyan">"throttle_pct"</span>: 82.0}</div>
+  <div class="line">    ],</div>
+  <div class="line">    <span class="cyan">"cpus"</span>: [{<span class="cyan">"cpu"</span>: 0, <span class="cyan">"governor"</span>: <span class="yellow">"powersave"</span>, <span class="cyan">"cur_khz"</span>: 2400000, <span class="cyan">"max_khz"</span>: 4800000}],</div>
+  <div class="line">    <span class="cyan">"summary"</span>: {<span class="cyan">"zones"</span>: 2, <span class="cyan">"coolers"</span>: 4, <span class="cyan">"cores"</span>: 8, <span class="cyan">"max_temp_c"</span>: 67.0, <span class="cyan">"governor"</span>: <span class="yellow">"powersave"</span>}</div>
+  <div class="line sep">  }</div>
+  <div class="line"></div>
+
+  <div class="line prompt">  $ ./thermal-watch --threshold 70 --watch 2</div>
+  <div class="line bold">  THERMAL WATCH — Linux thermal monitor  (/sys/class/thermal + cpufreq)</div>
+  <div class="line dim">  (live refresh every 2s — Ctrl+C to exit)</div>
+  <div class="line cyan">  THERMAL ZONES (2)</div>
+  <div class="line dim">   ZONE  TYPE                         TEMP     POLICY</div>
+  <div class="line">     0  x86_pkg_temp                  <span class="yellow">   67.0 C</span>  step_wise</div>
+  <div class="line">     1  acpitz                        <span class="green">   45.0 C</span>  user_space</div>
+  <div class="line"></div>
+  <div class="line cyan">  SUMMARY</div><div class="line">  zones 2   coolers 4   cores 8   max temp <span class="yellow">67.0 C</span></div>
+  <div class="line"></div>
+
+  <div class="line prompt">  $ ./thermal-watch --selftest</div>
+  <div class="line green">  PASS</div><div class="line">  mC 45000 -&gt; 45.0</div>
+  <div class="line green">  PASS</div><div class="line">  mC 67000 -&gt; 67.0</div>
+  <div class="line green">  PASS</div><div class="line">  throttle 45/100</div>
+  <div class="line green">  PASS</div><div class="line">  bar clamp</div>
+  <div class="line green">  PASS</div><div class="line">  snapshot counts</div>
+  <div class="line green">  PASS</div><div class="line">  json shape</div>
+  <div class="line">  <span class="bold">16 passed, 0 failed</span></div>
+  <div class="line dim">  ─────────────────────────────────────────────────────────────</div>
+  <div class="line dim">  Fuentes: /sys/class/thermal/thermal_zone*/{temp,type,policy} · cooling_device* · cpufreq</div>
+</div>
+</body>
+</html>
